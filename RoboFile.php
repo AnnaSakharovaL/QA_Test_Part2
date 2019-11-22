@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is project's console commands configuration for Robo task runner.
  *
@@ -35,7 +36,7 @@ class RoboFile extends \Robo\Tasks
     public function parallelMergeResults()
     {
         $merge = $this->taskMergeXmlReports();
-        for ($i=1; $i<=5; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             $merge->from("tests/_output/result_paracept_$i.xml");
         }
         $merge->into("tests/_output/result_paracept.xml")->run();

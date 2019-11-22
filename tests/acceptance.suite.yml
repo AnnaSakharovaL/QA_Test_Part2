@@ -6,36 +6,36 @@
 
 actor: AcceptanceTester
 modules:
-    enabled:
-        - \Helper\Acceptance
-        - Asserts
-        - WebDriver:
-              url: 'https://yandex.ru'
-              browser: 'chrome'
-    step_decorators: ~
+  enabled:
+    - \Helper\Acceptance
+    - Asserts
+    - WebDriver:
+        url: 'https://yandex.ru'
+        browser: 'chrome'
+  step_decorators: ~
 env:
-    env1:
-        modules:
-            config:
-                WebDriver:
-                    url: 'http://test1.localhost/'
-    env2:
-        modules:
-            config:
-                WebDriver:
-                    url: 'http://test2.localhost/'
-    env3:
-        modules:
-            config:
-                WebDriver:
-                    url: 'http://test3.localhost/'
-    env4:
-        modules:
-            config:
-                WebDriver:
-                    url: 'http://test4.localhost/'
-    env5:
-        modules:
-            config:
-                WebDriver:
-                    url: 'http://test5.localhost/'
+  env1:
+    modules:
+      config:
+        WebDriver:
+          url: 'http://test1.localhost/'
+  env2:
+    modules:
+      config:
+        WebDriver:
+          url: 'http://test2.localhost/'
+  env3:
+    modules:
+      config:
+        WebDriver:
+          url: 'http://test3.localhost/'
+  env4:
+    modules:
+      config:
+        WebDriver:
+          url: 'http://test4.localhost/'
+  env5:
+    modules:
+      config:
+        WebDriver:
+          url: 'http://test5.localhost/'
