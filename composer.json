@@ -1,0 +1,6 @@
+{
+    "require-dev": {
+        "codeception/robo-paracept": "dev-master",
+        "codeception/codeception": "^3.1"
+    }
+}
