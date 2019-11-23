@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This is project's console commands configuration for Robo task runner.
  *
@@ -20,23 +19,25 @@ class RoboFile extends \Robo\Tasks
             ->run();
     }
 
-    public function parallelRun()
-    {
-        $parallel = $this->taskParallelExec();
-        for ($i = 1; $i <= 5; $i++) {
-            $parallel->process(
-                $this->taskExec('docker-compose run --rm codecept run')
-                    ->option('group', "paracept_$i") // run for groups paracept_*
-                    ->option('xml', "tests/_log/result_$i.xml") // provide xml report
-            );
-        }
-        return $parallel->run();
-    }
+	public function parallelRun()
+	{
+		$parallel = $this->taskParallelExec();
+		for ($i = 1; $i <= 5; $i++) {
+			$parallel->process(
+				$this->taskCodecept() // use built-in Codecept task
+				->suite('acceptance') // run acceptance tests
+				->group("paracept_$i") // for all paracept_* groups
+				->xml("result_paracept_$i.xml") // save XML results
+			);
+		}
+		return $parallel->run();
+	}
+
 
     public function parallelMergeResults()
     {
         $merge = $this->taskMergeXmlReports();
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i=1; $i<=5; $i++) {
             $merge->from("tests/_output/result_paracept_$i.xml");
         }
         $merge->into("tests/_output/result_paracept.xml")->run();
