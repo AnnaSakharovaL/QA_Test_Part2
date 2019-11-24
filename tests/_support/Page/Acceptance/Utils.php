@@ -34,13 +34,13 @@ class Utils extends \Codeception\Module
         $wd->getMouse()->mouseMove($element->getCoordinates());
     }
 
-    public function checkElementIsVisible(\AcceptanceTester $I, WebDriver $wd, WebDriverElement $element, $elementCss)
+    public function checkElementIsVisible(\AcceptanceTester $I, WebDriver $wd, WebDriverElement $element, $index)
     {
         //$wd->wait(30)->until(WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector($elementCss)));
         //$this->assertTrue($element->isEnabled());
-        $screen = $wd->takeScreenshot('screen2.png');
+        $screen = $wd->takeScreenshot('screen4.png');
         $x = $element->getLocation()->getX();
-        $y = $element->getLocation()->getY();
+        $y = $element->getLocation()->getY() + ($element->getSize()->getHeight() + $index*10);
         $r = $element->getSize()->getWidth();
         $d = $element->getSize()->getHeight();
 
@@ -53,7 +53,7 @@ class Utils extends \Codeception\Module
         print $element->getLocation()->getY() . "\n";
         print $element->getSize()->getWidth(). "\n";
         print $element->getSize()->getHeight() . "\n";
-        print ("---------------------------");
+        print ("2---------------------------");
 
 
         //print $left . "\n";
@@ -61,13 +61,20 @@ class Utils extends \Codeception\Module
         //print $right . "\n";
         //print $bottom . "\n";
 
-        $imageFromScreen = imagecreatefrompng('screen2.png');
+        $imageFromScreen = imagecreatefrompng('screen4.png');
 
-        $newImage = imagecreatetruecolor($element->getSize()->getWidth(), $element->getSize()->getHeight());
-        imagecopy($newImage, $imageFromScreen, 0, 0, $x, $y, $r, -$d);
-        imagepng($newImage, 'screen3.png');
-        imagedestroy($imageFromScreen);
+        $newImage = imagecreatetruecolor($r, $d);
+        imagecopy($newImage, $imageFromScreen, 0, 0, $x, $y, $r, $d);
+        imagepng($newImage, 'screen5.png');
+        //imagedestroy($imageFromScreen);
         imagedestroy($newImage);
+
+        $newImage2 = imagecreatetruecolor($r, $d);
+        imagecopy($newImage2, $imageFromScreen, 0, 0, $x, $y, $r, $d);
+        imagepng($newImage2, 'screen6.png');
+        imagedestroy($imageFromScreen);
+        imagedestroy($newImage2);
+        $this->assertTrue(md5(file_get_contents('screen5.png')) == md5(file_get_contents('screen6.png')));
 
 
 

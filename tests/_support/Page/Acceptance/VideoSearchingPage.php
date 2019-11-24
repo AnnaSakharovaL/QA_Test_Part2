@@ -60,10 +60,11 @@ class VideoSearchingPage extends Utils
     {
         $searchingResult = $this->getElementFromPage($this->wd, self::$foundVideosListCss);
         $videosList = $this->getElementsCollectionFromPage($searchingResult, self::$videoCss);
-        $video = $videosList[2];
-        $this->elementHover($this->wd, $video, self::$videoCss);
+        $video = $videosList[1];
+        //$this->elementHover($this->wd, $video, self::$videoCss);
         //$trailer = $video->findElement(WebDriverBy::cssSelector(self::$trailerCss));
-        $this->checkElementIsVisible($this->I, $this->wd, $video, self::$trailerCss);
+        $this->checkElementIsVisible($this->I, $this->wd, $video, 1);
+
     }
 
 }
