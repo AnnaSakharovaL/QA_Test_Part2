@@ -34,54 +34,44 @@ class Utils extends \Codeception\Module
         $wd->getMouse()->mouseMove($element->getCoordinates());
     }
 
-    public function checkElementIsVisible(\AcceptanceTester $I, WebDriver $wd, WebDriverElement $element, $index)
+    public function checkTrailer(\AcceptanceTester $I, WebDriver $wd, WebDriverElement $element, $index, $firstVideoIsBig)
     {
-        //$wd->wait(30)->until(WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector($elementCss)));
-        //$this->assertTrue($element->isEnabled());
-        $screen = $wd->takeScreenshot('screen4.png');
+        $firstScreenName = 'screen' . rand(1000000, 9999999) . ".png";
+        $secondScreenName = 'screen' . rand(1000000, 9999999) . ".png";
         $x = $element->getLocation()->getX();
-        $y = $element->getLocation()->getY() + ($element->getSize()->getHeight() + $index*10);
-        $r = $element->getSize()->getWidth();
-        $d = $element->getSize()->getHeight();
+        if (($firstVideoIsBig) and ($index > 0)) {
+            $y = $element->getLocation()->getY() + ($element->getSize()->getHeight() + $index * 6);
+        } else if (($firstVideoIsBig) and ($index == 0)) {
+            $y = $element->getLocation()->getY() + ($element->getSize()->getHeight() - 100);
+        } else if ((!$firstVideoIsBig) and ($index == 0)) {
+            $y = $element->getLocation()->getY() + ($element->getSize()->getHeight() - 50);
+        } else {
+            $y = $element->getLocation()->getY() + ($element->getSize()->getHeight() - 20 / $index);
+        }
+        $w = $element->getSize()->getWidth();
+        $h = $element->getSize()->getHeight();
 
-        //$left = $element->getLocation()->getX();
-        //$top = $element->getLocation()->getY();
-        //$right = $element->getSize()->getWidth();
-        //$bottom = $element->getSize()->getHeight();
+        $this->makeElementScreen($firstScreenName, $wd, $x, $y, $w, $h);
+        $I->wait(1);
+        $this->makeElementScreen($secondScreenName, $wd, $x, $y, $w, $h);
+        $this->assertTrue(md5(file_get_contents($firstScreenName)) != md5(file_get_contents($secondScreenName)));
 
-        print $element->getLocation()->getX() . "\n";
-        print $element->getLocation()->getY() . "\n";
-        print $element->getSize()->getWidth(). "\n";
-        print $element->getSize()->getHeight() . "\n";
-        print ("2---------------------------");
-
-
-        //print $left . "\n";
-        //print $top . "\n";
-        //print $right . "\n";
-        //print $bottom . "\n";
-
-        $imageFromScreen = imagecreatefrompng('screen4.png');
-
-        $newImage = imagecreatetruecolor($r, $d);
-        imagecopy($newImage, $imageFromScreen, 0, 0, $x, $y, $r, $d);
-        imagepng($newImage, 'screen5.png');
-        //imagedestroy($imageFromScreen);
-        imagedestroy($newImage);
-
-        $newImage2 = imagecreatetruecolor($r, $d);
-        imagecopy($newImage2, $imageFromScreen, 0, 0, $x, $y, $r, $d);
-        imagepng($newImage2, 'screen6.png');
-        imagedestroy($imageFromScreen);
-        imagedestroy($newImage2);
-        $this->assertTrue(md5(file_get_contents('screen5.png')) == md5(file_get_contents('screen6.png')));
-
-
-
+        /**  Альтернативный способ снятия скришота элемента и сравнения различий через утилитку для Codeception - работает немного криво, поэтому проверка может быть неточная */
         //$I->seeVisualChanges('test1', $elementCss);
+        //$I->wait(1);
         //$I->seeVisualChanges('test2', $elementCss);
         //$this->assertTrue(file_get_contents('E:\QA_Test_Part2\tests\_data\VisualCeption\VideoTrailerTestCest.videoTrailerTest.test1.png') == file_get_contents('E:\QA_Test_Part2\tests\_data\VisualCeption\VideoTrailerTestCest.videoTrailerTest.test2.png'));
+    }
 
+    public function makeElementScreen($fileName, WebDriver $wd, $x, $y, $w, $h)
+    {
+        $wd->takeScreenshot($fileName);
+        $imageFromScreen = imagecreatefrompng($fileName);
+        $newImage = imagecreatetruecolor($w, $h);
+        imagecopy($newImage, $imageFromScreen, 0, 0, $x, $y, $w, $h);
+        imagepng($newImage, $fileName);
+        imagedestroy($imageFromScreen);
+        imagedestroy($newImage);
     }
 
     public function getElementFromPage(WebDriver $wd, $elementCss)

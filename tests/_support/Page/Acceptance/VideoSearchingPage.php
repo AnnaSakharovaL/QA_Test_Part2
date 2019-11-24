@@ -60,10 +60,15 @@ class VideoSearchingPage extends Utils
     {
         $searchingResult = $this->getElementFromPage($this->wd, self::$foundVideosListCss);
         $videosList = $this->getElementsCollectionFromPage($searchingResult, self::$videoCss);
-        $video = $videosList[1];
-        //$this->elementHover($this->wd, $video, self::$videoCss);
-        //$trailer = $video->findElement(WebDriverBy::cssSelector(self::$trailerCss));
-        $this->checkElementIsVisible($this->I, $this->wd, $video, 1);
+        $videoNumber = 1;
+        $video = $videosList[$videoNumber];
+        $firstVideoIsBig = false;
+        /** у Яндекса разное поведение при выполнении поиска видео - иногда первое видео увеличено, иногда - нет, отсюда разное определение механизма обрезки, это условие для определения, увеличено ли первое видео*/
+        if ($videosList[0]->getSize()->getWidth() > 184) {
+            $firstVideoIsBig = true;
+        }
+        $this->elementHover($this->wd, $video, self::$videoCss);
+        $this->checkTrailer($this->I, $this->wd, $video, $videoNumber, $firstVideoIsBig);
 
     }
 
