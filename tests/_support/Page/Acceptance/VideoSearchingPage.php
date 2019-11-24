@@ -12,7 +12,7 @@ class VideoSearchingPage extends Utils
     public static $searchFieldCss = 'input';
     public static $searchStartButtonCss = 'button.websearch-button';
     public static $foundVideosListCss = 'div.serp-controller__content';
-    public static $videoCss = 'div.thumb-image__preview.thumb-preview__target';
+    public static $videoCss = 'div.serp-item__preview.serp-item__preview_rounded';
     public static $trailerCss = 'video.thumb-preview__video';
 
     /**
@@ -59,11 +59,11 @@ class VideoSearchingPage extends Utils
     public function checkVideoTrailer()
     {
         $searchingResult = $this->getElementFromPage($this->wd, self::$foundVideosListCss);
-        $videosList = $this->getElementsCollectionFromOtherElement($searchingResult, self::$videoCss);
-        $video = $videosList[0];
+        $videosList = $this->getElementsCollectionFromPage($searchingResult, self::$videoCss);
+        $video = $videosList[2];
         $this->elementHover($this->wd, $video, self::$videoCss);
-        $trailer = $video->findElement(WebDriverBy::cssSelector(self::$trailerCss));
-        $this->checkElementIsVisible($this->wd, $trailer, self::$trailerCss);
+        //$trailer = $video->findElement(WebDriverBy::cssSelector(self::$trailerCss));
+        $this->checkElementIsVisible($this->I, $this->wd, $video, self::$trailerCss);
     }
 
 }

@@ -12,6 +12,10 @@ modules:
     - WebDriver:
         url: 'https://yandex.ru'
         browser: 'chrome'
+    - VisualCeption:
+        maximumDeviation: 5                                   # deviation in percent
+        saveCurrentImageIfFailure: true                       # if true, VisualCeption saves the current
+        fullScreenShot: false
   step_decorators: ~
 env:
   env1:

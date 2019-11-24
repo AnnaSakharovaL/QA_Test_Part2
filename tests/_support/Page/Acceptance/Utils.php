@@ -34,10 +34,47 @@ class Utils extends \Codeception\Module
         $wd->getMouse()->mouseMove($element->getCoordinates());
     }
 
-    public function checkElementIsVisible(WebDriver $wd, WebDriverElement $element, $elementCss)
+    public function checkElementIsVisible(\AcceptanceTester $I, WebDriver $wd, WebDriverElement $element, $elementCss)
     {
-        $wd->wait(30)->until(WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector($elementCss)));
-        $this->assertTrue($element->isEnabled());
+        //$wd->wait(30)->until(WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector($elementCss)));
+        //$this->assertTrue($element->isEnabled());
+        $screen = $wd->takeScreenshot('screen2.png');
+        $x = $element->getLocation()->getX();
+        $y = $element->getLocation()->getY();
+        $r = $element->getSize()->getWidth();
+        $d = $element->getSize()->getHeight();
+
+        //$left = $element->getLocation()->getX();
+        //$top = $element->getLocation()->getY();
+        //$right = $element->getSize()->getWidth();
+        //$bottom = $element->getSize()->getHeight();
+
+        print $element->getLocation()->getX() . "\n";
+        print $element->getLocation()->getY() . "\n";
+        print $element->getSize()->getWidth(). "\n";
+        print $element->getSize()->getHeight() . "\n";
+        print ("---------------------------");
+
+
+        //print $left . "\n";
+        //print $top . "\n";
+        //print $right . "\n";
+        //print $bottom . "\n";
+
+        $imageFromScreen = imagecreatefrompng('screen2.png');
+
+        $newImage = imagecreatetruecolor($element->getSize()->getWidth(), $element->getSize()->getHeight());
+        imagecopy($newImage, $imageFromScreen, 0, 0, $x, $y, $r, -$d);
+        imagepng($newImage, 'screen3.png');
+        imagedestroy($imageFromScreen);
+        imagedestroy($newImage);
+
+
+
+        //$I->seeVisualChanges('test1', $elementCss);
+        //$I->seeVisualChanges('test2', $elementCss);
+        //$this->assertTrue(file_get_contents('E:\QA_Test_Part2\tests\_data\VisualCeption\VideoTrailerTestCest.videoTrailerTest.test1.png') == file_get_contents('E:\QA_Test_Part2\tests\_data\VisualCeption\VideoTrailerTestCest.videoTrailerTest.test2.png'));
+
     }
 
     public function getElementFromPage(WebDriver $wd, $elementCss)
@@ -45,9 +82,9 @@ class Utils extends \Codeception\Module
         return $wd->findElement(WebDriverBy::cssSelector($elementCss));
     }
 
-    public function getElementsCollectionFromPage(WebDriver $wd, $searchingElementsCss)
+    public function getElementsCollectionFromPage(WebDriverElement $rootElement, $searchingElementsCss)
     {
-        return $wd->findElements(WebDriverBy::cssSelector($searchingElementsCss));
+        return $rootElement->findElements(WebDriverBy::cssSelector($searchingElementsCss));
     }
 
     public function getElementFromOtherElement(WebDriver $wd, WebDriverElement $rootElement, $elementCss)
