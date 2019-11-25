@@ -12,6 +12,7 @@ class VideoTrailerTestCest
     // tests
     public function videoTrailerTest(\AcceptanceTester $I)
     {
+        $I->maximizeWindow();
         $I->wantTo('Find video and check the trailer');
         $U = new VideoSearchingPage($I);
         $U->goToVideoSearchingPage();
