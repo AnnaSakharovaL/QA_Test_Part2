@@ -3,16 +3,16 @@
 1. Для успешного запуска тестов:
 - должен быть установлен и запущен Selenium Server. (установить можно, выполнив команду composer global require --dev se/selenium-server-standalone) - тогда запускать сервер можно в консоли по команде selenium-server-standalone
 Примечание: если запуск тестов будет происходить на ОС Windows, возможно потребуется подправить файл:
-C:\Users\<Пользователь>\AppData\Roaming\Composer\vendor\bin\selenium-server-standalone.bat:
+C:\Users\<Пользователь>\AppData\Roaming\Composer\vendor\bin\selenium-server-standalone.bat: <br />
  а) заменить SET BIN_TARGET=%~dp0/../se/selenium-server-standalone/bin/selenium-server-standalone
 на 
-SET BIN_TARGET=%~dp0/../se/selenium-server-standalone/bin/selenium-server-standalone.jar
+SET BIN_TARGET=%~dp0/../se/selenium-server-standalone/bin/selenium-server-standalone.jar <br />
  б)  заменить sh "%BIN_TARGET%" %* на java -jar "%BIN_TARGET%" %*
 - должны быть установлены PHP 7.3 и Composer версии 1.9.1
 - в проекте реализована проверка визульного изменения элемента через утилиту VisualCeption (по умолчанию этот метод отключен). Для того, чтобы он заработал при включении, необходимо выполнить следующее:
  а) установить расширение ImageMagic PHP. Примечание (Важно(!!!)) - если установка производится на ОС Windows, следует настраивать по следующей инструкции: https://mlocati.github.io/articles/php-windows-imagick.html
 - в файле php.ini должны быть раскомментированы следующие строчки: <br />
- а) extension=gd2
+ а) extension=gd2 <br />
  б) extension=imagick (эту строчки изначально нет, ее нужно добавить после установки ImageMagic)
 
 2. Также нужно в переменной окружения Path указать путь к файлу chromedriver. Скачать можно отсюда: https://chromedriver.chromium.org/downloads
