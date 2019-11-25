@@ -4,7 +4,6 @@
 namespace Page\Acceptance;
 
 use \Facebook\WebDriver\WebDriver;
-use Facebook\WebDriver\WebDriverBy;
 
 class VideoSearchingPage extends Utils
 {
@@ -70,16 +69,16 @@ class VideoSearchingPage extends Utils
         }
         $this->elementHover($this->wd, $video, self::$videoCss);
 
-        /** Проверка на случай, если наводим на элемент, выходящий за нижний край экрана (например на 10-е видео), чтобы обновить данные о списке видео и для того, чтобы селениум смог посчитать позицию. Здесь есть небольшая неточность, на разных размерах экрана позиции передаваемых для проверки элементов могут отличаться. Приведение к универсальности в процессе проработки */
-        if (($videoNumber > 4) and ($firstVideoIsBig)) {
+        /** Далее идет проверка на случай, если наводим на элемент, выходящий за нижний край экрана (например на 10-е видео), чтобы обновить данные о списке видео и для того, чтобы селениум смог посчитать позицию. Здесь есть небольшая неточность, а мое экране работает, но на других размерах позиции передаваемых для проверки элементов могут отличаться. */
+
+        /**if (($videoNumber > 4) and ($firstVideoIsBig)) {
             $videosList = $this->getElementsCollectionFromPage($searchingResult, self::$videoCss);
             $this->checkTrailer($this->I, $this->wd, $videosList[3], $videoNumber, $firstVideoIsBig);
         } else if (($videoNumber > 4) and (!$firstVideoIsBig)) {
             $videosList = $this->getElementsCollectionFromPage($searchingResult, self::$videoCss);
             $this->checkTrailer($this->I, $this->wd, $videosList[5], $videoNumber, $firstVideoIsBig);
-        } else {
+        } else {} */
             $this->checkTrailer($this->I, $this->wd, $video, $videoNumber, $firstVideoIsBig);
-        }
     }
 
 }
